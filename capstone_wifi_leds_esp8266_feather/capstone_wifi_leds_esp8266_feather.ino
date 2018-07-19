@@ -2,9 +2,12 @@
 #include <ESP8266HTTPClient.h>
 #include <ArduinoJson.h>
 #include <Adafruit_NeoPixel.h>
+#ifdef __AVR__
+  #include <avr/power.h>
+#endif
 
 const char* ssid = "ada-seattle";
-const char* password = "Password";
+const char* password = "Pass";
 
 #define PIN 2
 
@@ -32,8 +35,16 @@ byte neopix_gamma[] = {
   177,180,182,184,186,189,191,193,196,198,200,203,205,208,210,213,
   215,218,220,223,225,228,231,233,236,239,241,244,247,249,252,255 };
 
+// Color constants
+const char* rainbow = "rainbow";
+
 void setup() 
 {
+  strip.setBrightness(BRIGHTNESS);
+  strip.begin();
+  strip.show(); // Initialize all pixels to 'off'
+  colorWipe(strip.Color(0, 0, 0, 255), 50); // White
+  
   Serial.begin(115200);
   WiFi.begin(ssid, password);
 
@@ -56,7 +67,7 @@ void loop() {
 
     if (httpCode > 0) 
     {
-      const size_t bufferSize = JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(3) + JSON_OBJECT_SIZE(5) + JSON_OBJECT_SIZE(8) + 370;
+      const size_t bufferSize = JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(3) + 370;
       DynamicJsonBuffer jsonBuffer(bufferSize);
       JsonObject& root = jsonBuffer.parseObject(http.getString());
  
@@ -65,13 +76,39 @@ void loop() {
 
       Serial.print("Color:");
       Serial.println(color);
+      Serial.print("id:");
       Serial.println(id);
+
+      if (color == false)
+      {
+        colorWipe(strip.Color(255, 0, 0, 0), 50); // Red
+      }
+      
+      if (id == 0) // if color not rainbow, parse string by r, g, b
+      {
+//        const char* r = root["r"];
+//        const char* g = root["g"];
+//        const char* b = root["b"];
+//        
+//        colorWipe(strip.Color(r, g, b), 50);
+          colorWipe(strip.Color(0, 0, 255, 0), 50); // Blue
+      }
       
     } else { 
-      Serial.println("Server Error"); // check thumbprint as possible solution since SSL certs change
+      Serial.println("Server Error"); // check thumbprint as possible solution since SSL certs change see README
     }
     http.end(); //Close connection
   }
   delay(30000); // 30 seconds
 
 }
+
+// COLOR COMMANDS
+// Fill the dots one after the other with a color
+void colorWipe(uint32_t c, uint8_t wait) {
+  for(uint16_t i=0; i<strip.numPixels(); i++) {
+   strip.setPixelColor(i, c);
+   strip.show();
+   delay(wait);
+  }
+ }
