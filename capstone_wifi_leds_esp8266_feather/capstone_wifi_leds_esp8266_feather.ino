@@ -11,7 +11,7 @@ const char* password = "pass";
 
 #define PIN 2
 
-#define NUM_LEDS 60
+#define NUM_LEDS 58
 
 #define BRIGHTNESS 100
 
@@ -66,125 +66,69 @@ void loop() {
     {
       // Color constants
       const char* rainbow = "rainbow";
-      const char* color1 = "{\"r\":244,\"g\":67,\"b\":54,\"a\":1}";
-      const char* color2 = "{\"r\":233,\"g\":30,\"b\":99,\"a\":1}";
-      const char* color3 = "{\"r\":156,\"g\":39,\"b\":176,\"a\":1}";
-      const char* color4 = "{\"r\":103,\"g\":58,\"b\":183,\"a\":1}";
-      const char* color5 = "{\"r\":63,\"g\":81,\"b\":181,\"a\":1}";
-      const char* color6 = "{\"r\":33,\"g\":150,\"b\":243,\"a\":1}";
-      const char* color7 = "{\"r\":3,\"g\":169,\"b\":244,\"a\":1}";
-      const char* color8 = "{\"r\":0,\"g\":188,\"b\":212,\"a\":1}";
-      const char* color9 = "{\"r\":0,\"g\":150,\"b\":136,\"a\":1}";
-      const char* color10 = "{\"r\":76,\"g\":175,\"b\":80,\"a\":1}";
-      const char* color11 = "{\"r\":139,\"g\":195,\"b\":74,\"a\":1}";
-      const char* color12 = "{\"r\":205,\"g\":220,\"b\":57,\"a\":1}";
-      const char* color13 = "{\"r\":255,\"g\":235,\"b\":59,\"a\":1}";
-      const char* color14 = "{\"r\":255,\"g\":193,\"b\":7,\"a\":1}";
-      const char* color15 = "{\"r\":255,\"g\":152,\"b\":0,\"a\":1}";
-      const char* color16 = "{\"r\":255,\"g\":87,\"b\":34,\"a\":1}";
       
 
       const size_t bufferSize = JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(3) + 370;
       DynamicJsonBuffer jsonBuffer(bufferSize);
       JsonObject& root = jsonBuffer.parseObject(http.getString());
  
-      int id = root["id"]; 
-      const char* color = root["color"];
+      String color = root["color"];
+      const char* id = root["id"];
 
       Serial.print("Color:");
       Serial.println(color);
       Serial.print("id:");
       Serial.println(id);
 
+      int num = color.toInt();
+
       if (color == false)
       {
         colorWipe(strip.Color(255, 0, 0, 0), 50); // Red
       }
 
-      
-      if (strcmp (color, color1) == 0) 
-      {    
-          colorWipe(strip.Color(244, 67, 54, 0), 50); // "#f44336"
-      }
-
-      if (strcmp (color, color2) == 0) 
-      {    
-          colorWipe(strip.Color(233, 30, 99, 0), 50); // "#e91e63"
-      }
-
-      if (strcmp (color, color3) == 0) 
-      {    
-          colorWipe(strip.Color(156, 39, 176, 0), 50); // "#9c27b0"
-      }
-
-      if (strcmp (color, color4) == 0) 
-      {    
-          colorWipe(strip.Color(103, 58, 183, 0), 50); // "#673ab7"
-      }
-
-      if (strcmp (color, color5) == 0) 
-      {    
-          colorWipe(strip.Color(63, 81, 181, 0), 50); // "#3f51b5"
-      }
-
-      if (strcmp (color, color6) == 0) 
-      {    
-          colorWipe(strip.Color(33, 150, 243, 0), 50); // "#2196f3"
-      }
-
-      if (strcmp (color, color7) == 0) 
-      {    
-          colorWipe(strip.Color(3, 169, 244, 0), 50); // "#03a9f4"
-      }
-
-      if (strcmp (color, color8) == 0) 
-      {    
-          colorWipe(strip.Color(0, 188, 212, 0), 50); // "#00bcd4"
-      }
-
-      if (strcmp (color, color9) == 0) 
-      {    
-          colorWipe(strip.Color(0, 150, 136, 0), 50); // "#009688"
-      }
-
-      if (strcmp (color, color10) == 0) 
-      {    
-          colorWipe(strip.Color(76, 175, 76, 0), 50); // "#4caf50"
-      }
-
-      if (strcmp (color, color11) == 0) 
-      {    
-          colorWipe(strip.Color(139, 195, 74, 0), 50); // "#8bc34a"
-      }
-
-      if (strcmp (color, color12) == 0) 
-      {    
-          colorWipe(strip.Color(205, 220, 57, 0), 50); // "#cddc39"
-      }
-
-      if (strcmp (color, color13) == 0) 
-      {    
-          colorWipe(strip.Color(255, 235, 59, 0), 50); // "#ffeb3b"
-      }
-
-      if (strcmp (color, color14) == 0) 
-      {    
-          colorWipe(strip.Color(255, 193, 7, 0), 50); // "#ffc107"
-      }
-
-      if (strcmp (color, color15) == 0) 
-      {    
-          colorWipe(strip.Color(255, 152, 0, 0), 50); // "#ff9800"
-      }
-
-      if (strcmp (color, color16) == 0) 
-      {    
-          colorWipe(strip.Color(255, 87, 34, 0), 50); // "#ff5722"
-      }
-      
-      if (strcmp (color, rainbow) == 0) // if color rainbow, fade in rainbow
-      {
-        rainbowFade2White(3,3,1);
+      switch (num) {
+        case 1:
+          colorWipe(strip.Color(255, 0, 0, 0), 50); // '#ff0000'
+          break;
+        case 2:
+          colorWipe(strip.Color(255, 165, 0, 0), 50); // '#ffa500'
+          break;
+        case 3:
+          colorWipe(strip.Color(255, 255, 0, 0), 50); // '#ffff00'
+          break;
+        case 4:
+          colorWipe(strip.Color(0, 255, 0, 0), 50); // '#00ff00'
+          break;
+        case 5:
+          colorWipe(strip.Color(0, 0, 255, 0), 50); // '#0000ff'
+          break;
+        case 6:
+          colorWipe(strip.Color(85, 26, 139, 0), 50); // '#551a8b'
+          break;
+        case 7:
+          colorWipe(strip.Color(3, 169, 244, 0), 50); // '#03a9f4'
+          break;
+        case 8:
+          colorWipe(strip.Color(233, 30, 99, 0), 50); // '#e91e63'
+          break;
+        case 9:
+          colorWipe(strip.Color(0, 150, 136, 0), 50); // '#009688'
+          break;
+        case 10:
+          colorWipe(strip.Color(128, 0, 0, 0), 50); // '#800000'
+          break;
+        case 11:
+          colorWipe(strip.Color(255, 0, 255, 0), 50); // '#ff00ff'
+          break;
+        case 12:
+          colorWipe(strip.Color(0, 102, 0, 0), 50); // '#006600'
+          break;
+        case 13:
+          rainbowFade2White(3,3,1); // RAINBOW
+        default:
+          colorWipe(strip.Color(0, 0, 0, 255), 50); // '#ffffff'
+          break;
       }
       
     } else { 
