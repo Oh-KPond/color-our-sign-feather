@@ -19,3 +19,7 @@ All hardware code was written using the Arduino IDE
 - Power source includes the capacitor between the wall plug and other hardware
 
 - LED strip with silicon sleeve removed is held in place with paperclips that have been hot-glued into the box by one end
+
+## Links to Connecting Code (React App & Hardware Repos)
+- [Color Our Sign React App](https://github.com/Oh-KPond/color-our-sign)
+- [Color Our Sign API](https://github.com/Oh-KPond/color-our-sign-api)
