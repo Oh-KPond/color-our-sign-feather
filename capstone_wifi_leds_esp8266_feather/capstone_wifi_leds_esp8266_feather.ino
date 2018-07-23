@@ -6,8 +6,8 @@
   #include <avr/power.h>
 #endif
 
-const char* ssid = "CenturyLink0874";
-const char* password = "pass";
+const char* ssid = "ada-seattle";
+const char* password = "AdaLovelaceCodesIt";
 
 #define PIN 2
 
@@ -125,7 +125,7 @@ void loop() {
           colorWipe(strip.Color(0, 102, 0, 0), 50); // '#006600'
           break;
         case 13:
-          rainbowFade2White(3,3,1); // RAINBOW
+          rainbowFade2White(50, 1, 0); // RAINBOW
         default:
           colorWipe(strip.Color(0, 0, 0, 255), 50); // '#ffffff'
           break;
@@ -136,7 +136,7 @@ void loop() {
     }
     http.end(); //Close connection
   }
-  delay(500); // half a second
+  delay(100); // half a second
 
 }
 
@@ -150,7 +150,7 @@ void colorWipe(uint32_t c, uint8_t wait) {
   }
  }
 
- void rainbowFade2White(uint8_t wait, int rainbowLoops, int whiteLoops) {
+void rainbowFade2White(uint8_t wait, int rainbowLoops, int whiteLoops) {
   float fadeMax = 100.0;
   int fadeVal = 0;
   uint32_t wheelVal;
@@ -177,19 +177,46 @@ void colorWipe(uint32_t c, uint8_t wait) {
           fadeVal++;
       }
 
-//      //Last loop, fade out!
-//      else if(k == rainbowLoops - 1 && j > 255 - fadeMax ){
-//          fadeVal--;
-//      }
+      //Last loop, fade out!
+      else if(k == rainbowLoops - 1 && j > 255 - fadeMax ){
+          fadeVal--;
+      }
 
         strip.show();
         delay(wait);
     }
   
   }
-  delay(500);
-}
 
+
+
+  delay(500);
+
+
+  for(int k = 0 ; k < whiteLoops ; k ++){
+
+    for(int j = 0; j < 256 ; j++){
+
+        for(uint16_t i=0; i < strip.numPixels(); i++) {
+            strip.setPixelColor(i, strip.Color(0,0,0, neopix_gamma[j] ) );
+          }
+          strip.show();
+        }
+
+        delay(2000);
+    for(int j = 255; j >= 0 ; j--){
+
+        for(uint16_t i=0; i < strip.numPixels(); i++) {
+            strip.setPixelColor(i, strip.Color(0,0,0, neopix_gamma[j] ) );
+          }
+          strip.show();
+        }
+  }
+
+  delay(500);
+
+
+}
 // Input a value 0 to 255 to get a color value.
 // The colours are a transition r - g - b - back to r.
 uint32_t Wheel(byte WheelPos) {
