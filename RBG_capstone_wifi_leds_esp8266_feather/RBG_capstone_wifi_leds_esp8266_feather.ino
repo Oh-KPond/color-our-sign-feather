@@ -65,7 +65,7 @@ void loop() {
     if (httpCode > 0) 
     {
       // Color constants
-      String rainbow = "{\"r\":0,\"g\":0,\"b\":0,\"a\":1}";
+      String rainbow = "{\"r\":0,\"g\":0,\"b\":0}";
 
       const size_t bufferSize = JSON_OBJECT_SIZE(2) + JSON_OBJECT_SIZE(3) + JSON_OBJECT_SIZE(5) + JSON_OBJECT_SIZE(8) + 370;
       DynamicJsonBuffer jsonBuffer(bufferSize);
@@ -98,22 +98,22 @@ void loop() {
 
       if (color == false)
       {
-        
         colorWipe(strip.Color(255, 0, 0, 0), 50); // Red
         colorWipe(strip.Color(0, 0, 0, 255), 50); // White
-        
-      } else if (color.equals(rainbow) == 0){
-        
-        rainbowFade2White(50, 1, 0); // RAINBOW
-        
-      } else {
-        
+      } 
+      else if (color == rainbow)
+      {
+        rainbowFade2White(20, 1, 0); // RAINBOW
+      } 
+      else 
+      {
         colorWipe(strip.Color(r, g, b, 0), 50); // 'selected color'
-        
       }
-      
+
     } else { 
       Serial.println("Server Error"); // check thumbprint as possible solution since SSL certs change see README
+      colorWipe(strip.Color(255, 0, 0, 0), 20); // Red
+      colorWipe(strip.Color(0, 0, 0, 255), 20); // White
     }
     http.end(); //Close connection
   }
