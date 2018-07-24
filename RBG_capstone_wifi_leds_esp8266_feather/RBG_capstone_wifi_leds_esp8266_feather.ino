@@ -7,7 +7,7 @@
 #endif
 
 const char* ssid = "ada-seattle";
-const char* password = "AdaLovelaceCodesIt";
+const char* password = "pass";
 
 #define PIN 2
 
@@ -58,7 +58,7 @@ void loop() {
     Serial.println("Connected!");
     HTTPClient http; //Object of class HTTPClient
     String thumbprint =   "08 3B 71 72 02 43 6E CA ED 42 86 93 BA 7E DF 81 C4 BC 62 30"; // to find thumbprint see view certificate in security tab of dev tools SHA-1
-    String path = "https://color-our-sign-api-pr-2.herokuapp.com/color";
+    String path = "https://color-our-sign-api.herokuapp.com/color";
     http.begin(path, thumbprint);
     int httpCode = http.GET();
 
